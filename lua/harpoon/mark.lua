@@ -213,6 +213,7 @@ end
 function M.add_file(file_name_or_buf_id)
     filter_filetype()
     local buf_name = get_buf_name(file_name_or_buf_id)
+    local global_settings = harpoon.get_global_settings()
     log.trace("add_file():", buf_name)
 
     if M.valid_index(M.get_index_of(buf_name)) then
@@ -223,6 +224,11 @@ function M.add_file(file_name_or_buf_id)
     validate_buf_name(buf_name)
 
     local found_idx = get_first_empty_slot()
+    
+    if global_settings.relative_filepath then
+        buf_name = utils.get_relative_path(buf_name)
+    end
+
     harpoon.get_mark_config().marks[found_idx] = create_mark(buf_name)
     M.remove_empty_tail(false)
     emit_changed()

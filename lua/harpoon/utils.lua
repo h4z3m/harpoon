@@ -42,6 +42,10 @@ function M.normalize_path(item)
     return Path:new(item):make_relative(M.project_key())
 end
 
+function M.get_relative_path(file_path)
+    return vim.fn.fnamemodify(file_path, ":~")
+end
+
 function M.get_os_command_output(cmd, cwd)
     if type(cmd) ~= "table" then
         print("Harpoon: [get_os_command_output]: cmd has to be a table")
